@@ -3,10 +3,8 @@ import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 public class Datasource {
-    public static final String filePath = App.class.getClassLoader().getResource("pageviews-20161109-000000.gz").getPath();
-
     public void readData() throws IOException {
-        InputStream in = null;
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(new File("./output")));
         TreeMap<String, Integer> treeMapMerge = new TreeMap<>();
         TreeMap<Integer, ArrayList<String>> treeMapSortKey = new TreeMap<>(
@@ -17,10 +15,8 @@ public class Datasource {
                     }
                 }
         );
-
         try {
-            in = new GZIPInputStream(new FileInputStream(filePath));
-            Scanner sc=new Scanner(in);
+            Scanner sc=new Scanner(bf);
             while(sc.hasNextLine()){
                 String str1 = sc.nextLine();
                 str1 = Filter.filter(str1);
