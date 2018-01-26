@@ -1,9 +1,5 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,33 +17,20 @@ public class BlackListGen {
 
         ArrayList<String> arrayList = new ArrayList<>();
         String[] blkList = {};
-        try{
-            BufferedWriter writer = new BufferedWriter(new FileWriter("black.txt"));
-            for (Map.Entry<String, Object> entry : list.entrySet()) {
-                JSONObject jsb = (JSONObject)JSON.toJSON(entry.getValue());
+        for (Map.Entry<String, Object> entry : list.entrySet()) {
+            JSONObject jsb = (JSONObject)JSON.toJSON(entry.getValue());
 
-                String namespace = jsb.get("*").toString();
-                if(!namespace.equals("")){
-                    String[] strArr = namespace.split(" ");
-                    if(strArr.length>1){
-                        namespace = String.join("_", strArr);
-                    }
-                    namespace = namespace+":";
-                    arrayList.add(namespace);
-                    writer.append(namespace);
-                    writer.newLine();
+            String namespace = jsb.get("*").toString();
+            if(!namespace.equals("")){
+                String[] strArr = namespace.split(" ");
+                if(strArr.length>1){
+                    namespace = String.join("_", strArr);
                 }
+                namespace = namespace+":";
+                arrayList.add(namespace);
             }
-            writer.flush();
-            writer.close();
-            blkList = arrayList.toArray(new String[arrayList.size()]);
-            return blkList;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-
+        blkList = arrayList.toArray(new String[arrayList.size()]);
         return blkList;
     }
-
 }
